@@ -44,9 +44,7 @@ public class OpenCL {
 
 	private static int KERNEL_ARG_INCREMENTOR = 0;
 
-	public void createCL() {
-		//CL.getFunctionProvider();
-		//CL.create();
+	public OpenCL() {
 		clDevices = new Vector<>();
 
 		try (MemoryStack stack = stackPush()) {
@@ -94,8 +92,12 @@ public class OpenCL {
 	}
 
 	public long createProgram(long clContext, String clSource) {
+		return createProgram(clContext, clSource, "");
+	}
+
+	public long createProgram(long clContext, String clSource, String buildOptions) {
 		long clProgram = clCreateProgramWithSource(clContext, clSource, err);
-		clBuildProgram(clProgram, bestDev.deviceID, "", null, 0);
+		clBuildProgram(clProgram, bestDev.deviceID, buildOptions, null, 0);
 		String buildLog = InfoUtil.getProgramBuildInfoStringASCII(clProgram, bestDev.deviceID, CL_PROGRAM_BUILD_LOG);
 		if (!buildLog.equals("\n")) System.out.printf("Build Error!\nBuild log: %s\n", buildLog);
 		InfoUtil.checkCLError(err);

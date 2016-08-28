@@ -25,7 +25,7 @@ public abstract class Renderer {
 	public Renderer() {
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		glOrtho(0, 1, 0, 1, -1.0, 1.0);
+		glOrtho(-511, 512, -512, 512, -1.0, 1.0);
 		glDisable(GL_DEPTH_TEST);
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();

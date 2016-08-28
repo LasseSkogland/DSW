@@ -20,9 +20,9 @@ public class Window {
 	public void initialize(String title, int width, int height) {
 		glfwInit();
 		glfwDefaultWindowHints();
-		windowIdentifier = glfwCreateWindow(width, height, title, 0, 0);
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+		windowIdentifier = glfwCreateWindow(width, height, title, 0, 0);
 		GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 		glfwSetWindowPos(windowIdentifier, (vidmode.width() - width) / 2, (vidmode.height() - height) / 2);
 		glfwMakeContextCurrent(windowIdentifier);

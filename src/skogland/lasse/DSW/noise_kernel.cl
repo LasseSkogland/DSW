@@ -590,7 +590,7 @@ __kernel void worldgen(__global float *output, float X, float Y, float divident)
     float2 position = (float2)(coord.x / (float)size.x, coord.y / (float)size.y);
     float2 sample = (position + bias) * divident;
 
-    float value2 = monofractal2d(sample, 20.0f, 2.02f, 1.f /*INCREMENT*/, 8.3f);
+    float value2 = monofractal2d(sample, 1, 2.02f, 1 /*INCREMENT*/, 8.3f);
 
     uint index = coord.y * size.x + coord.x;
     output[index] = value2 + 1.f;

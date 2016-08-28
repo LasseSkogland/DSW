@@ -1,6 +1,5 @@
 package skogland.lasse.DSW.lwjglwrapper.renderer;
 
-import org.lwjgl.BufferUtils;
 import skogland.lasse.DSW.lwjglwrapper.Renderer;
 
 import java.nio.FloatBuffer;
@@ -20,7 +19,26 @@ public class GL11Renderer extends Renderer {
 
 	@Override
 	public void render(float x, float y, float x2, float y2, int textureID) {
-		FloatBuffer vertices = BufferUtils.createFloatBuffer(18);
+		glBindTexture(GL_TEXTURE_2D, textureID);
+		glBegin(GL_TRIANGLES);
+		{
+			glTexCoord2d(0, 0);
+			glVertex2d(x, y);
+			glTexCoord2d(1, 0);
+			glVertex2d(x2, y);
+			glTexCoord2d(0, 1);
+			glVertex2d(x, y2);
+			glTexCoord2d(0, 1);
+			glVertex2d(x, y2);
+			glTexCoord2d(1, 0);
+			glVertex2d(x2, y);
+			glTexCoord2d(1, 1);
+			glVertex2d(x2, y2);
+		}
+		glEnd();
+		glBindTexture(GL_TEXTURE_2D, 0);//*/
+
+		/*FloatBuffer vertices = BufferUtils.createFloatBuffer(18);
 		vertices.put(new float[]{
 				x, y, 0,
 				x2, y, 0,
@@ -39,8 +57,7 @@ public class GL11Renderer extends Renderer {
 				1, 1
 		}).flip();
 		render(GL_TRIANGLES, vertices, null, textureCoords, textureID);
-		textureCoords.clear();
-		vertices.clear();
+		//*/
 	}
 
 	@Override
