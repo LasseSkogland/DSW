@@ -67,7 +67,7 @@ public class Main {
 		public void run() {
 			try {
 				setupCLGenerator();
-				while (true) {
+				while (gameAlive) {
 					Chunk c;
 					if ((c = chunkQueue.poll()) == null) {
 						Thread.sleep(10);
@@ -111,7 +111,7 @@ public class Main {
 
 			gameAlive = !window.update();
 		}
-
+		if (escPressed) gameAlive = false;
 		window.destroy();
 		glfwTerminate();
 		cl.releaseProgram(program);
