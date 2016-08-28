@@ -108,7 +108,6 @@ public class Main {
 				if (c.textureID == -1) c.textureID = renderer.loadTexture(c.img, Renderer.NO_ALPHA);
 				renderer.render(((-X + c.x) * CHUNK_SIZE), ((-Y + c.y) * CHUNK_SIZE), ((-X + c.x) * CHUNK_SIZE) + CHUNK_SIZE, ((-Y + c.y) * CHUNK_SIZE) + CHUNK_SIZE, c.textureID);
 			}
-
 			gameAlive = !window.update();
 		}
 		if (escPressed) gameAlive = false;
@@ -124,26 +123,28 @@ public class Main {
 				escPressed = true;
 			} else if (key == GLFW_KEY_UP) {
 				Y += step;
-				needsRefresh = true;
 			} else if (key == GLFW_KEY_DOWN) {
 				Y -= step;
-				needsRefresh = true;
 			} else if (key == GLFW_KEY_LEFT) {
 				X -= step;
-				needsRefresh = true;
 			} else if (key == GLFW_KEY_RIGHT) {
 				X += step;
-				needsRefresh = true;
 			} else if (key == GLFW_KEY_W) {
 				divident *= 2;
 				needsRefresh = true;
 			} else if (key == GLFW_KEY_S) {
 				divident /= 2;
 				needsRefresh = true;
-			} else if (key == GLFW_KEY_P) {
-				needsRefresh = true;
-				saveToDisk = true;
 			}
+
+			if (needsRefresh) for (Chunk c : chunkMap.values()) {
+				c.textureID = -1;
+				c.img = null;
+				chunkQueue.offer(c);
+				chunkMap.remove(c);
+				needsRefresh = false;
+			}
+
 			if (!chunkMap.containsKey((Y + 1) * MAX_WORLD_SIZE + X + 1)) chunkQueue.offer(new Chunk(X + 1, Y + 1));
 			if (!chunkMap.containsKey((Y + 1) * MAX_WORLD_SIZE + X)) chunkQueue.offer(new Chunk(X, Y + 1));
 			if (!chunkMap.containsKey((Y + 1) * MAX_WORLD_SIZE + X - 1)) chunkQueue.offer(new Chunk(X - 1, Y + 1));
@@ -158,8 +159,6 @@ public class Main {
 	};
 
 	public static BufferedImage runKernel(OpenCL cl, float X, float Y) {
-		//if (texture != 0) glDeleteTextures(texture);
-		int texture = 0;
 		FloatBuffer result = BufferUtils.createFloatBuffer(CHUNK_SIZE * CHUNK_SIZE);
 		cl.setKernelArg(kernel, output);
 		cl.setKernelArg(kernel, X);
@@ -182,10 +181,9 @@ public class Main {
 				else if (n < 1.5) color = 0xff018E0E;
 				else if (n < 1.75) color = 0xff01A611;
 				else if (n < 1.95) color = 0xff777777;
-				else color = 0xffffffff;//*/
+				else color = 0xffffffff;
 				img.setRGB(x, y, color);
 			}
-		if (img == null) System.out.println("Som ting wong");
 		return img;
 	}
 }
