@@ -66,7 +66,6 @@ public class Main {
 		@Override
 		public void run() {
 			try {
-				System.out.println(".");
 				setupCLGenerator();
 				while (true) {
 					Chunk c;
@@ -74,11 +73,8 @@ public class Main {
 						Thread.sleep(10);
 						continue;
 					}
-					System.out.print(".");
 					c.img = runKernel(cl, c.x, c.y);
-					System.out.print(".");
 					chunkMap.put((c.y * MAX_WORLD_SIZE) + c.x, c);
-					System.out.println(".");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
